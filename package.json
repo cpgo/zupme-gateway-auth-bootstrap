@@ -1,0 +1,17 @@
+{
+  "name": "zupme-oauth-login-app",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^0.8.5",
+    "stubby": "^0.2.13"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "scripts": {
+    "build": "",
+    "serve": "http-server src -s -c-1",
+    "stubby": "node node_modules/stubby/bin/stubby -d mocks.yaml"
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Login - Zup.me demo</title>
+  <link href="css/general.css" rel="stylesheet" type="text/css">
+  <link href="css/grant-permissions.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="permissions-page hidden">
+  <header>
+    <img src="images/logo.svg" />
+    <div class="header-text">
+      <h1>Permissions</h1>
+      <p class="header-description">Do you wish to allow <span id="application-name"></span> to access all of the following?</p>
+    </div>
+  </header>
+
+  <ul class="permission-box">
+    <li id="permission-model">
+      <div class="permission-icon">
+        <img src="images/lock.svg" />
+      </div>
+      <div class="permission-text">
+        <h2 class="permission-name"></h2>
+        <p class="permission-description"></p>
+      </div>
+    </li>
+  </ul>
+
+  <p class="buttons">
+    <button id="cancel">Cancel</button>
+    <button id="allow">Allow</button>
+  </p>
+</div>
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="scripts/utils.js"></script>
+<script src="scripts/grant-permissions.js"></script>
+</body>
+</html>

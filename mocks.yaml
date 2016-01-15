@@ -1,0 +1,103 @@
+# LOGIN
+
+- request:
+    url: ^/login$
+    method: POST
+    post: >
+      {"username":"error","password":"[^"]+"}
+  response:
+    headers:
+      content-type: application/json
+    status: 500
+    latency: 150
+    body: >
+      {"messages": ["Username or password is incorrect."]}
+
+- request:
+    url: ^/login$
+    method: POST
+    post: >
+      .*"username":"no-permissions".*
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"token": "blablabla", permissions: []}
+
+- request:
+    url: ^/login$
+    method: POST
+    post: >
+      {"username":"[^"]+","password":"[^"]+"}
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"token": "blablabla"}
+
+# PERMISSIONS
+
+- request:
+    url: ^/applications/notfound$
+    method: GET
+  response:
+    headers:
+      content-type: application/json
+    status: 404
+    latency: 150
+
+- request:
+    url: ^/applications/([^/]*)$
+    method: GET
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {
+        "name": "Aplication X",
+        "required_permissions": [
+          {
+            "id": 1,
+            "name": "Read bank information",
+            "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."
+          },
+          {
+            "id": 2,
+            "name": "Perform bank transactions",
+            "description": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"
+          },
+          {
+            "id": 3,
+            "name": "Read personal data",
+            "description": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
+          }
+        ]
+      }
+
+- request:
+    url: ^/applications/([^/]*)/grant_permissions$
+    method: POST
+    post: >
+      {"permissions":\[[^\]]+\]}
+    headers:
+      x-user-token: ".+"
+  response:
+    headers:
+      content-type: application/json
+    status: 204
+    latency: 150
+
+- request:
+    url: ^/application/([^/]*)/grant_permissions$
+    method: POST
+  response:
+    headers:
+      content-type: application/json
+    status: 500
+    latency: 150

@@ -1,0 +1,8 @@
+syntax: glob
+
+npm-debug.log
+node_modules/
+*.sublime-project
+*.sublime-workspace
+typings/
+.idea/

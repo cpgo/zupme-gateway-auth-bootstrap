@@ -1,0 +1,38 @@
+.login-page img {
+  width: 130px;
+}
+
+.login-page h1 {
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.login-page label {
+  display: inline-block;
+}
+
+.login-page input {
+  display: block;
+  width: 100%;
+  margin: 10px 0 20px 0;
+}
+
+.login-page .login-box {
+  margin-top: 20px;
+  padding: 30px 40px;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  display: inline-block;
+  text-align: left;
+  width: 300px;
+}
+
+.login-page .button-paragraph {
+  text-align: center;
+  margin: 0;
+}
+
+.login-page .errors {
+  margin: 20px 0 0 0;
+  color: red;
+}
