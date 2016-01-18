@@ -1,7 +1,10 @@
 {
   "name": "zupme-oauth-login-app",
   "version": "1.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "csso": "^1.5.1",
+    "uglify-js": "^2.6.1"
+  },
   "devDependencies": {
     "http-server": "^0.8.5",
     "stubby": "^0.2.13"
@@ -11,6 +14,9 @@
   },
   "scripts": {
     "build": "",
+    "prepare-directories": "node build/prepare-directories.js",
+    "minify-js": "node node_modules/uglify-js/bin/uglifyjs src/scripts/*.js --mangle --compress -o dist/scripts/app.js",
+    "minify-css": "cat src/css/*.css | node node_modules/csso/bin/csso -o dist/css/style.css",
     "serve": "http-server src -s -c-1",
     "stubby": "node node_modules/stubby/bin/stubby -d mocks.yaml"
   }

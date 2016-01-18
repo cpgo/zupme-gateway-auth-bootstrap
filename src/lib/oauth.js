@@ -1,5 +1,5 @@
 (function () {
-  var OAUTH_URL = 'http://localhost:8080/login.html',
+  var OAUTH_URL = 'http://localhost:8080/login.html', // Absolute URL to the oauth login page
       POPUP_WIDTH = 700,
       POPUP_HEIGHT = 650,
       OAUTH_COOKIE_NAME = 'company_oauth',
@@ -44,7 +44,7 @@
     },
 
     logout: function () {
-      deleteCookie('company_oauth');
+      deleteCookie(OAUTH_COOKIE_NAME);
     },
 
     consolidateLogin: function () {

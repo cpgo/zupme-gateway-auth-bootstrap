@@ -1,10 +1,20 @@
 (function () {
   'use strict';
 
-  var LOGIN_URL = 'http://localhost:8882/login';
+  var LOGIN_URL = 'http://localhost:8882/login',
+      GRANT_PERMISSIONS_PAGE = 'grant-permissions.html',
+      AUTHENTICATION_COOKIE_NAME = 'company_authentication';
 
   function initialize() {
+    if (isAlreadyLoggedIn()) {
+      goToGrantPermissionsPage();
+      return;
+    }
     $('form').submit(onSubmit);
+  }
+
+  function isAlreadyLoggedIn() {
+    return !!company.utils.getCookieAsObject(AUTHENTICATION_COOKIE_NAME);
   }
 
   function onSubmit() {
@@ -17,7 +27,7 @@
 
   function login(data) {
     $.post(LOGIN_URL, JSON.stringify(data))
-      .done(goToGrantPermissionsPage)
+      .done(afterLogin)
       .fail(showErrors);
   }
 
@@ -29,8 +39,13 @@
     $('#password').val('');
   }
 
+  function afterLogin(data) {
+    company.utils.writeObjectAsCookie(AUTHENTICATION_COOKIE_NAME, data, 7);
+    goToGrantPermissionsPage();
+  }
+
   function goToGrantPermissionsPage() {
-    window.location = 'grant-permissions.html';
+    window.location = GRANT_PERMISSIONS_PAGE + location.search;
   }
 
   initialize();
