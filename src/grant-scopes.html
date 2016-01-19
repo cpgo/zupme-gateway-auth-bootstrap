@@ -5,11 +5,11 @@
   <meta charset="UTF-8">
   <title>Login - Zup.me demo</title>
   <link href="css/general.css" rel="stylesheet" type="text/css">
-  <link href="css/grant-permissions.css" rel="stylesheet" type="text/css">
+  <link href="css/grant-scopes.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-<div class="permissions-page hidden">
+<div class="scopes-page hidden">
   <header>
     <img src="images/logo.svg" />
     <div class="header-text">
@@ -18,14 +18,14 @@
     </div>
   </header>
 
-  <ul class="permission-box">
-    <li id="permission-model">
-      <div class="permission-icon">
+  <ul class="scope-box">
+    <li id="scope-model">
+      <div class="scope-icon">
         <img src="images/lock.svg" />
       </div>
-      <div class="permission-text">
-        <h2 class="permission-name"></h2>
-        <p class="permission-description"></p>
+      <div class="scope-text">
+        <h2 class="scope-name"></h2>
+        <p class="scope-description"></p>
       </div>
     </li>
   </ul>
@@ -36,8 +36,9 @@
   </p>
 </div>
 <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.0/lodash.min.js"></script>
 <script src="scripts/utils.js"></script>
 <script src="scripts/config.js"></script>
-<script src="scripts/grant-permissions.js"></script>
+<script src="scripts/grant-scopes.js"></script>
 </body>
 </html>

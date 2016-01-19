@@ -8,23 +8,21 @@
   response:
     headers:
       content-type: application/json
-    status: 500
+    status: 401
     latency: 150
-    body: >
-      {"messages": ["Username or password is incorrect."]}
 
 - request:
     url: ^/login$
     method: POST
     post: >
-      .*"username":"no-permissions".*
+      .*"username":"with-permissions".*
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      {"token": "blablabla", permissions: []}
+      {"grant_token": "granttokenwithpermissions", "uid": "userid00"}
 
 - request:
     url: ^/login$
@@ -37,9 +35,9 @@
     status: 200
     latency: 150
     body: >
-      {"token": "blablabla"}
+      {"grant_token": "<% Math.random() %>", "uid": "userid01"}
 
-# PERMISSIONS
+# APPLICATION
 
 - request:
     url: ^/applications/notfound$
@@ -51,7 +49,7 @@
     latency: 150
 
 - request:
-    url: ^/applications/([^/]*)$
+    url: ^/applications/([^/]+)$
     method: GET
   response:
     headers:
@@ -61,7 +59,7 @@
     body: >
       {
         "name": "Aplication X",
-        "required_permissions": [
+        "scopes": [
           {
             "id": 1,
             "name": "Read bank information",
@@ -81,20 +79,22 @@
       }
 
 - request:
-    url: ^/applications/([^/]*)/grant_permissions$
+    url: ^/token$
     method: POST
     post: >
-      {"permissions":\[[^\]]+\]}
+      {"scopes":\[[^\]]+\]}
     headers:
-      x-user-token: ".+"
+      x-grant-token: ".+"
   response:
     headers:
       content-type: application/json
-    status: 204
+    status: 200
     latency: 150
+    body: >
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.company.com/oauth.html"], "access_token": "00acesstoken00"}
 
 - request:
-    url: ^/application/([^/]*)/grant_permissions$
+    url: ^/token$
     method: POST
   response:
     headers:

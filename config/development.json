@@ -1,7 +1,8 @@
 {
   "app": {
     "apiUrl": "http://localhost:8882",
-    "cookieName": "company_authorization"
+    "cookieName": "company_authorization",
+    "cookieExpirationDays": 30
   },
   "lib": {
     "oauthUrl": "http://localhost:8080/login.html",

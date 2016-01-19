@@ -1,39 +1,39 @@
-.permissions-page {
+.scopes-page {
   width: 550px;
   margin: 0 auto;
   display: inline-block;
   font-size: 0;
 }
 
-.permissions-page header {
+.scopes-page header {
   text-align: left;
   display: inline-block;
 }
 
-.permissions-page header img {
+.scopes-page header img {
   width: 55px;
   margin-right: 20px;
   display: inline-block;
   vertical-align: middle;
 }
 
-.permissions-page header h1 {
+.scopes-page header h1 {
   margin: 0 0 5px 0;
   font-size: 16px;
 }
 
-.permissions-page .header-text {
+.scopes-page .header-text {
   font-size: 14px;
   display: inline-block;
   vertical-align: middle;
   width: calc(100% - 75px);
 }
 
-.permissions-page .header-description {
+.scopes-page .header-description {
   margin: 0;
 }
 
-.permissions-page .permission-box {
+.scopes-page .scope-box {
   list-style: none;
   margin: 40px auto 0;
   padding: 0 20px;
@@ -42,12 +42,12 @@
   text-align: left;
 }
 
-.permissions-page .permission-box li {
+.scopes-page .scope-box li {
   padding: 15px 0;
   border-bottom: 1px solid #e8e8e8;
 }
 
-.permissions-page .permission-icon {
+.scopes-page .scope-icon {
   width: 53px;
   border-radius: 50%;
   text-align: center;
@@ -58,27 +58,27 @@
   background: linear-gradient(135deg, #397AE1 0%, #397AE1 50%, #4285f4 50%, #4285f4 100%);
 }
 
-.permissions-page .permission-icon img {
+.scopes-page .scope-icon img {
   width: 60%;
 }
 
-.permissions-page .permission-text {
+.scopes-page .scope-text {
   display: inline-block;
   vertical-align: middle;
   width: calc(100% - 80px);
   font-size: 13px;
 }
 
-.permissions-page .permission-text p {
+.scopes-page .scope-text p {
   margin: 0;
 }
 
-.permissions-page .permission-name {
+.scopes-page .scope-name {
   font-size: 13px;
   margin: 0 0 8px 0;
 }
 
-.permissions-page .buttons {
+.scopes-page .buttons {
   text-align: right;
   margin: 30px 0 0 0;
 }

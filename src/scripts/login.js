@@ -12,7 +12,7 @@
   }
 
   function isAuthenticated() {
-    return !!company.utils.getCookieAsObject(conf.cookieName);
+   return !!company.utils.getCookieAsObject(conf.cookieName);
   }
 
   function onSubmit() {
@@ -30,20 +30,20 @@
   }
 
   function showErrors(xhr) {
-    var messages = xhr.responseJSON ? xhr.responseJSON.messages : [],
-        message = messages[0] || 'An unexpected error occured. Please, try again.';
-
-    $('.errors').html(message);
+    if (xhr.status !== 401) {
+      return window.location = 'error.html';
+    }
+    $('.errors').html('Nome de usuário e/ou senha incorretos.');
     $('#password').val('');
   }
 
   function afterLogin(data) {
-    company.utils.writeObjectAsCookie(conf.cookieName, data, 7);
+    company.utils.writeObjectAsCookie(conf.cookieName, data, conf.cookieExpirationDays);
     goToGrantPermissionsPage();
   }
 
   function goToGrantPermissionsPage() {
-    window.location = 'grant-permissions.html' + location.search;
+    window.location = 'grant-scopes.html' + location.search;
   }
 
   function isLoginPage() {
