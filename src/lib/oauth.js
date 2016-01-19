@@ -1,11 +1,5 @@
 (function () {
-  var OAUTH_URL = 'http://localhost:8080/login.html', // Absolute URL to the oauth login page
-      POPUP_WIDTH = 700,
-      POPUP_HEIGHT = 650,
-      OAUTH_COOKIE_NAME = 'company_oauth',
-      OAUTH_COOKIE_EXPIRATION_DAYS = 7;
-
-  window.company = window.company || {};
+  var config = company.oauth.config;
 
   function writeObjectAsCookie(name, value, days) {
     var expires = new Date(new Date().getTime() + days * 24 * 60 * 60000).toISOString();
@@ -35,16 +29,16 @@
 
   company.oauth = {
     login: function (appKey, callbackUrl, callback) {
-      var url = OAUTH_URL;
+      var url = config.oauthUrl;
       url += '?redirect_url=' + location.origin + '/' + encodeURIComponent(callbackUrl);
       url += '&app_key=' + appKey;
       this.logout();
-      window.open(url, 'Login - Banco Original', 'width=' + POPUP_WIDTH + ', height=' + POPUP_HEIGHT);
+      window.open(url, 'Login - Banco Original', 'width=' + config.popupWidth + ', height=' + config.popupHeight);
       startCheckLoginRoutine(callback);
     },
 
     logout: function () {
-      deleteCookie(OAUTH_COOKIE_NAME);
+      deleteCookie(config.cookieName);
     },
 
     consolidateLogin: function () {
@@ -54,11 +48,11 @@
         uid: location.href.match(/\?.*uid=([^&]*)/)[1],
         token: location.href.match(/\?.*token=([^&]*)/)[1]
       };
-      writeObjectAsCookie(OAUTH_COOKIE_NAME, auth, OAUTH_COOKIE_EXPIRATION_DAYS);
+      writeObjectAsCookie(config.cookieName, auth, config.cookieExpirationDays);
     },
 
     getAuthenticationData: function () {
-      return getCookieAsObject(OAUTH_COOKIE_NAME);
+      return getCookieAsObject(config.cookieName);
     },
 
     isAuthenticated: function () {

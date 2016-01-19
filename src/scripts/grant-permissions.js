@@ -1,19 +1,25 @@
 (function () {
   'use strict';
 
-  var APPLICATION_DATA_URL = 'http://localhost:8882/applications/lala',
-      GRANT_PERMISSIONS_URL = 'http://localhost:8882/applications/lala/grant_permissions';
-
-  var permissionIds;
+  var conf = company.config,
+      permissionIds;
 
   function initialize() {
+    if (!isAuthenticated()) {
+      return location.href = 'login.html';
+    }
+
     loadApplicationData();
     $('#allow').click(allow);
     $('#cancel').click(window.close);
   }
 
+  function isAuthenticated() {
+    return !!company.utils.getCookieAsObject(conf.cookieName);
+  }
+
   function loadApplicationData() {
-    $.get(APPLICATION_DATA_URL)
+    $.get(conf.apiUrl + '/applications/lala')
       .done(processApplicationData)
       .fail(showUnexpectedError);
   }
@@ -57,7 +63,7 @@
   function grantPermissions() {
     return $.ajax({
       type: 'post',
-      url: GRANT_PERMISSIONS_URL,
+      url: conf.apiUrl + '/applications/lala/grant_permissions',
       data: JSON.stringify({permissions: permissionIds}),
       headers: {'x-user-token': 'aaaaa'}
     });
@@ -67,5 +73,11 @@
     window.location = company.utils.getUrlParam('callbackUrl');
   }
 
-  initialize();
+  function isPermissionsPage() {
+    return $('.permissions-page').length;
+  }
+
+  if (isPermissionsPage()) {
+    initialize();
+  }
 }());

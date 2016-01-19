@@ -1,0 +1,1 @@
+(function(){'use strict';window.company=window.company||{};company.config={"apiUrl":"http://localhost:8882","cookieName":"company_authorization"};}());
