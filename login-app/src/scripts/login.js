@@ -39,6 +39,7 @@
   }
 
   function afterLogin(data) {
+    data.username = $('#username').val();
     company.utils.writeObjectAsCookie(conf.cookieName, data, conf.cookieExpirationDays);
     goToGrantPermissionsPage();
   }

@@ -31,7 +31,9 @@
 
   function bindButtons() {
     $('#allow').click(allow);
-    $('#cancel').click(window.close);
+    $('#cancel').click(function () {
+      window.close();
+    });
   }
 
   function loadApplication() {
@@ -115,8 +117,9 @@
 
   function goToCallbackUrl(data) {
     window.location = url.callbackUrl +
-      '?access_token=' + encodeURIComponent(data['access_token']) +
-      '&uid=' + encodeURIComponent(auth.uid);
+      '?accessToken=' + encodeURIComponent(data['access_token']) +
+      '&uid=' + encodeURIComponent(auth.uid) +
+      '&username=' + encodeURIComponent(auth.username);
   }
 
   function replaceGrantToken(newGrantToken) {

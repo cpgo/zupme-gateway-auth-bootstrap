@@ -90,7 +90,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com"], "access_token": "00acesstoken00"}
+      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$
@@ -105,7 +105,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com"], "access_token": "00acesstoken00"}
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$

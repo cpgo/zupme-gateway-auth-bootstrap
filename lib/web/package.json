@@ -1,0 +1,22 @@
+{
+  "name": "company-oauth-lib",
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash": "^4.0.0",
+    "uglify-js": "^2.6.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.8.5"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "scripts": {
+    "build": "npm run prepare-directories && npm run copy-config && npm run minify",
+    "prepare-directories": "node build/prepare-directories",
+    "copy-config": "node build/copy-config",
+    "minify": "node node_modules/uglify-js/bin/uglifyjs src/config.js src/oauth.js --mangle --compress -o dist/oauth.js",
+    "serve": "npm run copy-config && http-server src -c-1 -p8081",
+    "serve:dist": "npm run build && http-server dist -c-1 -p8081"
+  }
+}

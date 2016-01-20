@@ -1,1 +1,0 @@
-(function(){'use strict';window.company=window.company||{};window.company.oauth=window.company.oauth||{};company.oauth.config={"oauthUrl":"http://localhost:8080/login.html","popupWidth":700,"popupHeight":650,"cookieName":"company_oauth","cookieExpirationDays":7};}());

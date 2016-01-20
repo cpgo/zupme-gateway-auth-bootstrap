@@ -9,8 +9,7 @@
     var env = yargs.argv.env || 'development',
         config = getConfigByEnvironment(env);
 
-    copyConfig('company.config', 'src/scripts/config.js', config.app);
-    copyConfig('company.oauth.config', 'src/lib/lib.config.js', config.lib);
+    copyConfig('company.config', 'src/scripts/config.js', config);
   }
 
   function getConfigByEnvironment(env) {

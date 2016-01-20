@@ -1,0 +1,5 @@
+{
+  "apiUrl": "http://localhost:8882",
+  "cookieName": "company_authorization",
+  "cookieExpirationDays": 30
+}

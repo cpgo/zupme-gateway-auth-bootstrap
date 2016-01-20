@@ -1,0 +1,13 @@
+{
+  "name": "third-party-app",
+  "version": "1.0.0",
+  "devDependencies": {
+    "http-server": "^0.8.5"
+  },
+  "engines": {
+    "node": ">=5.0.0"
+  },
+  "scripts": {
+    "serve": "http-server -c-1 -p8082"
+  }
+}

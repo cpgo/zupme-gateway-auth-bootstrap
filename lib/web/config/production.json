@@ -1,0 +1,8 @@
+{
+  "oauthUrl": "http://localhost:8080/login.html",
+  "popupTitle": "Company - Login",
+  "popupWidth": 700,
+  "popupHeight": 650,
+  "cookieName": "company_oauth",
+  "cookieExpirationDays": 30
+}
