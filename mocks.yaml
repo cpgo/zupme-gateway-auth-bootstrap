@@ -61,22 +61,36 @@
         "name": "Aplication X",
         "scopes": [
           {
-            "id": 1,
-            "name": "Read bank information",
+            "name": "read_bank_info",
             "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."
           },
           {
-            "id": 2,
-            "name": "Perform bank transactions",
+            "name": "perform_bank_transactions",
             "description": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"
           },
           {
-            "id": 3,
-            "name": "Read personal data",
+            "name": "read_personal_data",
             "description": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
           }
         ]
       }
+
+# TOKEN
+
+- request:
+    url: ^/token$
+    method: POST
+    post: >
+      {"scopes":\[[^\]]+\]}
+    headers:
+      x-grant-token: "granttokenwithpermissions"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$
@@ -91,7 +105,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.company.com/oauth.html"], "access_token": "00acesstoken00"}
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$
@@ -101,3 +115,31 @@
       content-type: application/json
     status: 500
     latency: 150
+
+# SCOPES
+
+- request:
+    url: ^/applications/([^/]+)/granted
+    method: GET
+    headers:
+      x-grant-token: "granttokenwithpermissions"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      ["read_bank_info", "read_personal_data"]
+
+- request:
+    url: ^/applications/([^/]+)/granted
+    method: GET
+    headers:
+      x-grant-token: ".+"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      []

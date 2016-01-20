@@ -2,7 +2,9 @@
   'use strict';
 
   var conf = company.config,
-      application, authorizedScopes, url, auth;
+      url = company.utils.getUrlParams(),
+      auth = company.utils.getCookieAsObject(conf.cookieName),
+      application, authorizedScopes;
 
   function initialize() {
     if (!isAuthenticated()) {
@@ -18,11 +20,11 @@
   }
 
   function goToLoginPage() {
-    location.href = 'login.html';
+    location.href = 'login.html' + location.search;
   }
 
   function loadApplicationAndScopes() {
-    $.when(loadApplication, loadAuthorizedScopes)
+    $.when(loadApplication(), loadAuthorizedScopes())
       .done(renderApplicationAndScopes)
       .fail(showUnexpectedError);
   }
@@ -44,12 +46,11 @@
     });
   }
 
-  function renderApplicationAndScopes(app, scopes) {
-    application = app;
-    authorizedScopes = scopes;
-    $('#application-name').html(appData.name);
+  function renderApplicationAndScopes(appResponse, scopesResponse) {
+    application = appResponse[0];
+    authorizedScopes = scopesResponse[0];
+    $('#application-name').html(application.name);
     handleScopes();
-    $('.permissions-page').removeClass('hidden');
   }
 
   function handleScopes() {
@@ -58,6 +59,7 @@
       return allow();
     }
     askForAuthorizationInScopes(scopesToAuthorize);
+    $('.scopes-page').removeClass('hidden');
   }
 
   function getRequiredScopesWhereAccessWasNotGranted() {
@@ -80,14 +82,14 @@
 
   function renderScope(scope, model, list) {
     var html = model.clone();
-    html.find('.scope-name').html(scopes[i].name);
-    html.find('.scope-description').html(scopes[i].description);
+    html.find('.scope-name').html(scope.name);
+    html.find('.scope-description').html(scope.description);
     list.append(html);
   }
 
   function showUnexpectedError() {
     company.utils.deleteCookie(conf.cookieName);
-    window.location = 'error.html';
+    window.location = 'error.html' + location.search;
   }
 
   function allow() {
@@ -101,14 +103,20 @@
       type: 'post',
       url: conf.apiUrl + '/token',
       data: JSON.stringify({scopes: url.scopes.split(',')}),
-      headers: {'x-grant-token': auth['grant_token']}
+      headers: {'x-grant-token': auth['grant_token'], 'x-uid': auth.uid}
     });
   }
 
   function handleTokens(data) {
     replaceGrantToken(data['grant_token']);
     verifyCallbackUrl(data['callback_urls']);
-    window.location = company.utils.getUrlParam('callbackUrl');
+    goToCallbackUrl(data);
+  }
+
+  function goToCallbackUrl(data) {
+    window.location = url.callbackUrl +
+      '?access_token=' + encodeURIComponent(data['access_token']) +
+      '&uid=' + encodeURIComponent(auth.uid);
   }
 
   function replaceGrantToken(newGrantToken) {
