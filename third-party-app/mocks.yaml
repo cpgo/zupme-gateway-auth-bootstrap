@@ -1,0 +1,14 @@
+# OAUTH COMPLETE FLUX: exchange auth-code for access-token
+
+- request:
+    url: ^/create_token$
+    method: POST
+    post: >
+      {"uid":"[^"]+","auth_code":"[^"]+"}
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"access_token": "00completeaccesstoken00"}

@@ -105,7 +105,7 @@
       type: 'post',
       url: conf.apiUrl + '/token',
       data: JSON.stringify({scopes: url.scopes.split(',')}),
-      headers: {'x-grant-token': auth['grant_token'], 'x-uid': auth.uid}
+      headers: {'x-grant-token': auth['grant_token'], 'x-uid': auth.uid, 'x-flow': url.flow}
     });
   }
 
@@ -117,7 +117,7 @@
 
   function goToCallbackUrl(data) {
     window.location = url.callbackUrl +
-      '?accessToken=' + encodeURIComponent(data['access_token']) +
+      '?accessToken=' + encodeURIComponent(data['access_token']) + // <-- what about authcode?
       '&uid=' + encodeURIComponent(auth.uid) +
       '&username=' + encodeURIComponent(auth.username);
   }

@@ -84,6 +84,25 @@
       {"scopes":\[[^\]]+\]}
     headers:
       x-grant-token: "granttokenwithpermissions"
+      x-uid: ".+"
+      x-flow: "complete"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "auth_code": "00authcode00"}
+
+- request:
+    url: ^/token$
+    method: POST
+    post: >
+      {"scopes":\[[^\]]+\]}
+    headers:
+      x-grant-token: "granttokenwithpermissions"
+      x-uid: ".+"
+      x-flow: "implicit"
   response:
     headers:
       content-type: application/json
@@ -98,7 +117,26 @@
     post: >
       {"scopes":\[[^\]]+\]}
     headers:
+      x-grant-token: "granttokenwithpermissions"
+      x-uid: ".+"
+      x-flow: "complete"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "auth_code": "00authcode00"}
+
+- request:
+    url: ^/token$
+    method: POST
+    post: >
+      {"scopes":\[[^\]]+\]}
+    headers:
       x-grant-token: ".+"
+      x-uid: ".+"
+      x-flow: "implicit"
   response:
     headers:
       content-type: application/json
