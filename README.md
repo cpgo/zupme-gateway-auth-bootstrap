@@ -36,8 +36,11 @@ Outra diferença importante entre os dois fluxos do oauth é a possibilidade de 
 completo, é possível renovar o access-token. No fluxo implícito, a renovação de token não é permitida, obrigando o
 usuário a efetuar login novamente.
 
-[Diagrama de atividades do fluxo implícito](oauth-implicito-atividades.png)
-[Diagrama de atividades do fluxo completo](oauth-completo-atividades.png)
+Diagrama de atividades do fluxo implícito:
+![Diagrama de atividades do fluxo implícito](oauth-implicito-atividades.png)
+
+Diagrama de atividades do fluxo completo:
+![Diagrama de atividades do fluxo completo](oauth-completo-atividades.png)
 
 No diagrama, as interações feitas entre os agentes "third-party-app" e "app-login" são implementadas na biblioteca
 disponibilizada no diretório lib/web deste repositório. Dessa forma, o desenvolvedor de aplicações terceiras não precisa 
