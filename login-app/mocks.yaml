@@ -117,7 +117,7 @@
     post: >
       {"scopes":\[[^\]]+\]}
     headers:
-      x-grant-token: "granttokenwithpermissions"
+      x-grant-token: ".+"
       x-uid: ".+"
       x-flow: "complete"
   response:

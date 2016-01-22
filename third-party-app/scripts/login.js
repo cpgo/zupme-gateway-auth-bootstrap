@@ -1,18 +1,43 @@
 (function () {
   'use strict';
 
-  $('#company-login').click(function () {
-    company.oauth.login({
-      callbackUrl: 'consolidate-login.html',
-      appId: 'a1sfdf5551de',
-      scopes: ['read_bank_info', 'read_personal_data'],
-      backendUrl: 'http://localhost:8881/create_token',
-      onSuccess: function () {
-        window.location = 'index.html';
-      },
-      onError: function () {
-        alert('Unable to complete login through backend server.');
-      }
+  function exchangeTokens(authData, saveAccessToken) {
+    var data = JSON.stringify({uid: authData.uid, auth_code: authData.authCode}),
+        request = $.post('http://localhost:8881/create_token', data);
+
+    request.done(function (accessToken) {
+      saveAccessToken(accessToken);
+      onLoginSuccess();
     });
+
+    request.fail(function () {
+      alert('Unable to complete login through backend server.');
+    });
+  }
+
+  function onLoginSuccess() {
+    window.location = 'index.html';
+  }
+
+  var implicitFlow = {
+    callbackUrl: 'consolidate-login.html',
+    appId: 'a1sfdf5551de',
+    scopes: ['read_bank_info', 'read_personal_data'],
+    onSuccess: onLoginSuccess
+  };
+
+  var completeFlow = {
+    callbackUrl: 'consolidate-login.html',
+    appId: 'a1sfdf5551de',
+    scopes: ['read_bank_info', 'read_personal_data'],
+    exchangeTokens: exchangeTokens
+  };
+
+  $('#company-login').click(function () {
+    company.oauth.login(implicitFlow);
   });
+
+  //$('#company-login').click(function () {
+  //  company.oauth.login(completeFlow);
+  //});
 }());

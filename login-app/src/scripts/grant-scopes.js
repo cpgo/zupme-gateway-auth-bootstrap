@@ -116,10 +116,16 @@
   }
 
   function goToCallbackUrl(data) {
-    window.location = url.callbackUrl +
-      '?accessToken=' + encodeURIComponent(data['access_token']) + // <-- what about authcode?
-      '&uid=' + encodeURIComponent(auth.uid) +
+    var navigateTo = url.callbackUrl +
+      '?uid=' + encodeURIComponent(auth.uid) +
       '&username=' + encodeURIComponent(auth.username);
+    if (data['access_token']) {
+      navigateTo += '&accessToken=' + encodeURIComponent(data['access_token']);
+    }
+    if (data['auth_code']) {
+      navigateTo += '&authCode=' + encodeURIComponent(data['auth_code']);
+    }
+    window.location = navigateTo;
   }
 
   function replaceGrantToken(newGrantToken) {
