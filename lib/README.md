@@ -17,7 +17,6 @@ acordo com o ambiente. Veja a seguir a descrição de cada parâmetro:
 | popupWidth           | Largura da popup de login                                           |
 | popupHeight          | Altura da popup de login                                            |
 | cookieName           | Nome do cookie para gravar as informações de autenticação           |
-| cookieExpirationDays | Número de dias necessários para que o cookie de autenticação expire |
 
 ## Funções na biblioteca
 A biblioteca implementa as seguintes funções relativas à autenticação:

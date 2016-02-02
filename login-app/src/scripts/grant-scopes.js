@@ -4,14 +4,16 @@
   var conf = company.config,
       url = company.utils.getUrlParams(),
       auth = company.utils.getCookieAsObject(conf.cookieName),
-      application, authorizedScopes;
+      oauthApiUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth',
+      application, authorizedScopes, applicationHeader;
 
   function initialize() {
     if (!auth) {
       return goToLoginPage();
     }
 
-    loadApplicationAndScopes();
+    createApplicationHeader();
+    loadApplicationAndScopes().done(renderPage).fail(showUnexpectedError);
     bindButtons();
   }
 
@@ -19,10 +21,14 @@
     location.href = 'login.html' + location.search;
   }
 
+  function createApplicationHeader() {
+    applicationHeader = url.applicationKey ?
+      {'x-application-key': url.applicationKey} :
+      {'x-developer-application-key': url.developerApplicationKey};
+  }
+
   function loadApplicationAndScopes() {
-    $.when(loadApplication(), loadAuthorizedScopes())
-      .done(renderApplicationAndScopes)
-      .fail(showUnexpectedError);
+    return $.when(loadApplication(), loadAuthorizedScopes());
   }
 
   function bindButtons() {
@@ -33,25 +39,30 @@
   }
 
   function loadApplication() {
-    return $.get(conf.login.entrypointUrl + '/applications/' + url.applicationKey);
-  }
-
-  function loadAuthorizedScopes() {
     return $.ajax({
       type: 'get',
-      url: conf.login.entrypointUrl + '/applications/' + url.applicationKey + '/granted',
-      headers: {'x-grant-token': auth.grantToken}
+      url: oauthApiUrl + '/application',
+      headers: applicationHeader
     });
   }
 
-  function renderApplicationAndScopes(appResponse, scopesResponse) {
-    application = appResponse[0];
-    authorizedScopes = scopesResponse[0];
-    $('#application-name').html(application.name);
-    handleScopes();
+  function loadAuthorizedScopes() {
+    return $.get(oauthApiUrl + '/user-scopes?uid=' + auth.uid);
   }
 
-  function handleScopes() {
+  function renderPage(appResponse, scopesResponse) {
+    application = appResponse[0];
+    authorizedScopes = scopesResponse[0].scopes;
+    verifyCallbackUrl(application.callbackUrls);
+    renderApplication();
+    renderScopes();
+  }
+
+  function renderApplication() {
+    $('#application-name').html(application.name);
+  }
+
+  function renderScopes() {
     var scopesToAuthorize = getRequiredScopesWhereAccessWasNotGranted();
     if (!scopesToAuthorize.length) {
       return allow();
@@ -66,7 +77,7 @@
   }
 
   function buildFullScope(scopeName) {
-    return _.find(application.scopes, {name: scopeName});
+    return {name: scopeName, description: application.scopes[scopeName]};
   }
 
   function askForAuthorizationInScopes(scopes) {
@@ -97,38 +108,32 @@
   }
 
   function grantPermissions() {
-    var tokenUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth/authorization-code';
-
-    return $.post(tokenUrl, {
-      grantToken: auth.grantToken,
-      uid: auth.uid,
-      scopes: url.scopes,
-      grantType: url.grantType
+    return $.ajax({
+      url: oauthApiUrl + '/authorization-code',
+      type: 'post',
+      headers: applicationHeader,
+      data: {
+        grantToken: auth.grantToken,
+        uid: auth.uid,
+        scopes: url.scopes,
+        grantType: url.grantType
+      }
     });
   }
 
-  function handleTokens(data) {
-    replaceGrantToken(data.grantToken);
-    verifyCallbackUrl(data.callbackUris);
+  function handleTokens(data, statusText, xhr) {
+    replaceGrantToken(xhr.getResponseHeader('x-grant-token'), xhr.getResponseHeader('x-grant-token-expiry'));
+    data.username = auth.username;
     goToCallbackUrl(data);
   }
 
-  function goToCallbackUrl(data) {
-    var navigateTo = url.callbackUrl +
-      '?uid=' + encodeURIComponent(auth.uid) +
-      '&username=' + encodeURIComponent(auth.username);
-    if (data.accessToken) {
-      navigateTo += '&accessToken=' + encodeURIComponent(data.accessToken);
-    }
-    if (data.authCode) {
-      navigateTo += '&authCode=' + encodeURIComponent(data.authCode);
-    }
-    window.location = navigateTo;
+  function goToCallbackUrl(urlParams) {
+    window.location = url.callbackUrl + '?' + company.utils.encodeObjectToUrl(urlParams);
   }
 
-  function replaceGrantToken(newGrantToken) {
+  function replaceGrantToken(newGrantToken, expiresInSeconds) {
     auth.grantToken = newGrantToken;
-    company.utils.writeObjectAsCookie(conf.cookieName, auth, conf.cookieExpirationDays);
+    company.utils.writeObjectAsCookie(conf.cookieName, auth, expiresInSeconds);
   }
 
   function verifyCallbackUrl(validUrls) {

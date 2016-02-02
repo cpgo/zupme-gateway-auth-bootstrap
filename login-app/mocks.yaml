@@ -6,8 +6,6 @@
     post: >
       {"username":"error","password":"[^"]+"}
   response:
-    headers:
-      content-type: application/json
     status: 401
     latency: 150
 
@@ -18,11 +16,12 @@
       .*"username":"with-permissions".*
   response:
     headers:
-      content-type: application/json
+      Access-Control-Expose-Headers: x-uid, x-grant-token, x-grant-token-expiry
+      x-uid: uidwithpermissions
+      x-grant-token: <% Math.random() %>
+      x-grant-token-expiry: 86400
     status: 200
     latency: 150
-    body: >
-      {"grantToken": "granttokenwithpermissions", "uid": "userid00"}
 
 - request:
     url: ^/bank/v1/login$
@@ -31,26 +30,20 @@
       {"username":"[^"]+","password":"[^"]+"}
   response:
     headers:
-      content-type: application/json
+      Access-Control-Expose-Headers: x-uid, x-grant-token, x-grant-token-expiry
+      x-uid: userid01
+      x-grant-token: <% Math.random() %>
+      x-grant-token-expiry: 86400
     status: 200
     latency: 150
-    body: >
-      {"grantToken": "<% Math.random() %>", "uid": "userid01"}
 
 # APPLICATION
 
 - request:
-    url: ^/applications/notfound$
+    url: ^/bank/v1/_oauth/application$
     method: GET
-  response:
     headers:
-      content-type: application/json
-    status: 404
-    latency: 150
-
-- request:
-    url: ^/applications/([^/]+)$
-    method: GET
+      X-Application-Key: ".+"
   response:
     headers:
       content-type: application/json
@@ -58,72 +51,56 @@
     latency: 150
     body: >
       {
+        "id": 1,
         "name": "Aplication X",
-        "scopes": [
-          {
-            "name": "read_bank_info",
-            "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."
-          },
-          {
-            "name": "perform_bank_transactions",
-            "description": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"
-          },
-          {
-            "name": "read_personal_data",
-            "description": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
-          }
-        ]
+        "keyName": "iOS",
+        "callbackUrls": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ],
+        "scopes": {
+          "read_bank_info": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses.",
+          "perform_bank_transactions": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!",
+          "read_personal_data": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
+        }
       }
+
+- request:
+    url: ^/bank/v1/_oauth/application$
+    method: GET
+    headers:
+      X-Developer-Application-Key: ".+"
+  response:
+    headers:
+      content-type: application/json
+    status: 200
+    latency: 150
+    body: >
+      {
+        "id": 1,
+        "name": "Aplication X",
+        "keyName": "iOS",
+        "callbackUrls": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ],
+        "scopes": {
+          "read_bank_info": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses.",
+          "perform_bank_transactions": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!",
+          "read_personal_data": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
+        }
+      }
+
+- request:
+    url: ^/bank/v1/_oauth/application$
+    method: GET
+  response:
+    status: 500
+    latency: 150
 
 # TOKEN
-
-- request:
-    url: ^/bank/v1/_oauth/authorization-code$
-    method: POST
-    post: >
-      grantToken=granttokenwithpermissions&uid=([^&]+)&scopes=[^&]+&grantType=complete
-  response:
-    headers:
-      content-type: application/json
-    status: 200
-    latency: 150
-    body: >
-      {
-        "uid":"<% post[1] %>",
-        "appKey":"allowedkey",
-        "authCode":"00authcode00",
-        "expiresIn":30,
-        "grantToken":"granttokenwithpermissions",
-        "callbackUris": [
-          "http://www.google.com",
-          "http://localhost:8082/consolidate-login.html",
-          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
-        ]
-      }
-
-- request:
-    url: ^/bank/v1/_oauth/authorization-code$
-    method: POST
-    post: >
-      grantToken=granttokenwithpermissions&uid=([^&]+)&scopes=[^&]+&grantType=implicit
-  response:
-    headers:
-      content-type: application/json
-    status: 200
-    latency: 150
-    body: >
-      {
-        "uid":"<% post[1] %>",
-        "appKey":"allowedkey",
-        "accessToken":"00acesstoken00",
-        "expiresIn":30,
-        "grantToken":"granttokenwithpermissions",
-        "callbackUris": [
-          "http://www.google.com",
-          "http://localhost:8082/consolidate-login.html",
-          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
-        ]
-      }
 
 - request:
     url: ^/bank/v1/_oauth/authorization-code$
@@ -132,7 +109,10 @@
       grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=complete
   response:
     headers:
+      Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
       content-type: application/json
+      x-grant-token: <% Math.random() %>
+      x-grant-token-expiry: 86400
     status: 200
     latency: 150
     body: >
@@ -140,13 +120,7 @@
         "uid":"<% post[1] %>",
         "appKey":"allowedkey",
         "authCode":"00authcode00",
-        "expiresIn":30,
-        "grantToken":"<% Math.random() %>",
-        "callbackUris": [
-          "http://www.google.com",
-          "http://localhost:8082/consolidate-login.html",
-          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
-        ]
+        "expiresIn":86400
       }
 
 - request:
@@ -156,7 +130,10 @@
       grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=implicit
   response:
     headers:
+      Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
       content-type: application/json
+      x-grant-token: <% Math.random() %>
+      x-grant-token-expiry: 86400
     status: 200
     latency: 150
     body: >
@@ -164,48 +141,40 @@
         "uid":"<% post[1] %>",
         "appKey":"allowedkey",
         "accessToken":"00acesstoken00",
-        "expiresIn":30,
-        "grantToken":"<% Math.random() %>",
-        "callbackUris": [
-          "http://www.google.com",
-          "http://localhost:8082/consolidate-login.html",
-          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
-        ]
+        "expiresIn":86400
       }
 
 - request:
     url: ^/bank/v1/_oauth/authorization-code$
     method: POST
   response:
-    headers:
-      content-type: application/json
     status: 500
     latency: 150
 
 # SCOPES
 
 - request:
-    url: ^/applications/([^/]+)/granted
+    url: ^/bank/v1/_oauth/user-scopes$
     method: GET
-    headers:
-      x-grant-token: "granttokenwithpermissions"
+    query:
+      uid: uidwithpermissions
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      ["read_bank_info", "read_personal_data"]
+      {"scopes": ["read_bank_info", "read_personal_data"]}
 
 - request:
-    url: ^/applications/([^/]+)/granted
+    url: ^/bank/v1/_oauth/user-scopes$
     method: GET
-    headers:
-      x-grant-token: ".+"
+    query:
+      uid: .+
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      []
+      {"scopes": []}

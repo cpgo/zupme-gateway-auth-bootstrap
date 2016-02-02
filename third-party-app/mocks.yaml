@@ -1,4 +1,4 @@
-# OAUTH COMPLETE FLUX: exchange auth-code for access-token
+# OAUTH COMPLETE FLOW: exchange auth-code for access-token
 
 - request:
     url: ^/create_token$

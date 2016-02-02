@@ -1,6 +1,5 @@
 {
   "cookieName": "company_authorization",
-  "cookieExpirationDays": 30,
   "login": {
     "entrypointUrl": "http://localhost:8882",
     "apiPath": "/bank",

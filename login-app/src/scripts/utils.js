@@ -15,8 +15,15 @@
 
       return params;
     },
-    writeObjectAsCookie: function (name, value, days) {
-      var expires = new Date(new Date().getTime() + days * 24 * 60 * 60000).toISOString();
+    encodeObjectToUrl: function (obj) {
+      return _.reduce(obj, function (encoded, value, key) {
+        encoded += encoded ? '&' : '';
+        encoded += key + '=';
+        return encoded + encodeURIComponent(value);
+      }, '');
+    },
+    writeObjectAsCookie: function (name, value, seconds) {
+      var expires = new Date(new Date().getTime() + seconds * 1000).toISOString();
       document.cookie = name + '=' + encodeURIComponent(JSON.stringify(value)) + '; expires=' + expires;
     },
     getCookieAsObject: function (name) {

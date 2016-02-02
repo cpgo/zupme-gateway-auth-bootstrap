@@ -40,9 +40,13 @@
     $('#password').val('');
   }
 
-  function afterLogin(data) {
-    data.username = $('#username').val();
-    company.utils.writeObjectAsCookie(conf.cookieName, data, conf.cookieExpirationDays);
+  function afterLogin(data, statusText, xhr) {
+    var loginResult = {
+      username: $('#username').val(),
+      uid: xhr.getResponseHeader('x-uid'),
+      grantToken: xhr.getResponseHeader('x-grant-token')
+    };
+    company.utils.writeObjectAsCookie(conf.cookieName, loginResult, xhr.getResponseHeader('x-grant-token-expiry'));
     goToGrantPermissionsPage();
   }
 
