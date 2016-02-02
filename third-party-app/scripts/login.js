@@ -21,7 +21,7 @@
 
   var implicitFlow = {
     callbackUrl: 'consolidate-login.html',
-    appId: 'a1sfdf5551de',
+    applicationKey: 'a1sfdf5551de',
     scopes: ['read_bank_info', 'read_personal_data'],
     onSuccess: onLoginSuccess
   };
@@ -35,9 +35,7 @@
 
   $('#company-login').click(function () {
     company.oauth.login(implicitFlow);
+    //company.oauth.login(completeFlow);
   });
 
-  //$('#company-login').click(function () {
-  //  company.oauth.login(completeFlow);
-  //});
 }());

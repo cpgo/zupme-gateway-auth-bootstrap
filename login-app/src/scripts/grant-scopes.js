@@ -7,16 +7,12 @@
       application, authorizedScopes;
 
   function initialize() {
-    if (!isAuthenticated()) {
+    if (!auth) {
       return goToLoginPage();
     }
 
     loadApplicationAndScopes();
     bindButtons();
-  }
-
-  function isAuthenticated() {
-    return !!company.utils.getCookieAsObject(conf.cookieName);
   }
 
   function goToLoginPage() {
@@ -37,14 +33,14 @@
   }
 
   function loadApplication() {
-    return $.get(conf.apiUrl + '/applications/' + url.applicationKey);
+    return $.get(conf.login.entrypointUrl + '/applications/' + url.applicationKey);
   }
 
   function loadAuthorizedScopes() {
     return $.ajax({
       type: 'get',
-      url: conf.apiUrl + '/applications/' + url.applicationKey + '/granted',
-      headers: {'x-grant-token': auth['grant_token']}
+      url: conf.login.entrypointUrl + '/applications/' + url.applicationKey + '/granted',
+      headers: {'x-grant-token': auth.grantToken}
     });
   }
 
@@ -101,17 +97,19 @@
   }
 
   function grantPermissions() {
-    return $.ajax({
-      type: 'post',
-      url: conf.apiUrl + '/token',
-      data: JSON.stringify({scopes: url.scopes.split(',')}),
-      headers: {'x-grant-token': auth['grant_token'], 'x-uid': auth.uid, 'x-flow': url.flow}
+    var tokenUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth/authorization-code';
+
+    return $.post(tokenUrl, {
+      grantToken: auth.grantToken,
+      uid: auth.uid,
+      scopes: url.scopes,
+      grantType: url.grantType
     });
   }
 
   function handleTokens(data) {
-    replaceGrantToken(data['grant_token']);
-    verifyCallbackUrl(data['callback_urls']);
+    replaceGrantToken(data.grantToken);
+    verifyCallbackUrl(data.callbackUris);
     goToCallbackUrl(data);
   }
 
@@ -119,17 +117,17 @@
     var navigateTo = url.callbackUrl +
       '?uid=' + encodeURIComponent(auth.uid) +
       '&username=' + encodeURIComponent(auth.username);
-    if (data['access_token']) {
-      navigateTo += '&accessToken=' + encodeURIComponent(data['access_token']);
+    if (data.accessToken) {
+      navigateTo += '&accessToken=' + encodeURIComponent(data.accessToken);
     }
-    if (data['auth_code']) {
-      navigateTo += '&authCode=' + encodeURIComponent(data['auth_code']);
+    if (data.authCode) {
+      navigateTo += '&authCode=' + encodeURIComponent(data.authCode);
     }
     window.location = navigateTo;
   }
 
   function replaceGrantToken(newGrantToken) {
-    auth['grant_token'] = newGrantToken;
+    auth.grantToken = newGrantToken;
     company.utils.writeObjectAsCookie(conf.cookieName, auth, conf.cookieExpirationDays);
   }
 

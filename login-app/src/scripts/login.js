@@ -25,9 +25,11 @@
   }
 
   function login(data) {
-    $.post(conf.apiUrl + '/login', JSON.stringify(data))
-      .done(afterLogin)
-      .fail(showErrors);
+    $.ajax({
+      type: conf.login.httpMethod,
+      url: conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + conf.login.resourcePath,
+      data: JSON.stringify(data)
+    }).done(afterLogin).fail(showErrors);
   }
 
   function showErrors(xhr) {

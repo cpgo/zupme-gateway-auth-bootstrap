@@ -1,7 +1,7 @@
 # LOGIN
 
 - request:
-    url: ^/login$
+    url: ^/bank/v1/login$
     method: POST
     post: >
       {"username":"error","password":"[^"]+"}
@@ -12,7 +12,7 @@
     latency: 150
 
 - request:
-    url: ^/login$
+    url: ^/bank/v1/login$
     method: POST
     post: >
       .*"username":"with-permissions".*
@@ -22,10 +22,10 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "uid": "userid00"}
+      {"grantToken": "granttokenwithpermissions", "uid": "userid00"}
 
 - request:
-    url: ^/login$
+    url: ^/bank/v1/login$
     method: POST
     post: >
       {"username":"[^"]+","password":"[^"]+"}
@@ -35,7 +35,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "uid": "userid01"}
+      {"grantToken": "<% Math.random() %>", "uid": "userid01"}
 
 # APPLICATION
 
@@ -78,75 +78,103 @@
 # TOKEN
 
 - request:
-    url: ^/token$
+    url: ^/bank/v1/_oauth/authorization-code$
     method: POST
     post: >
-      {"scopes":\[[^\]]+\]}
-    headers:
-      x-grant-token: "granttokenwithpermissions"
-      x-uid: ".+"
-      x-flow: "complete"
+      grantToken=granttokenwithpermissions&uid=([^&]+)&scopes=[^&]+&grantType=complete
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "auth_code": "00authcode00"}
+      {
+        "uid":"<% post[1] %>",
+        "appKey":"allowedkey",
+        "authCode":"00authcode00",
+        "expiresIn":30,
+        "grantToken":"granttokenwithpermissions",
+        "callbackUris": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ]
+      }
 
 - request:
-    url: ^/token$
+    url: ^/bank/v1/_oauth/authorization-code$
     method: POST
     post: >
-      {"scopes":\[[^\]]+\]}
-    headers:
-      x-grant-token: "granttokenwithpermissions"
-      x-uid: ".+"
-      x-flow: "implicit"
+      grantToken=granttokenwithpermissions&uid=([^&]+)&scopes=[^&]+&grantType=implicit
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "access_token": "00acesstoken00"}
+      {
+        "uid":"<% post[1] %>",
+        "appKey":"allowedkey",
+        "accessToken":"00acesstoken00",
+        "expiresIn":30,
+        "grantToken":"granttokenwithpermissions",
+        "callbackUris": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ]
+      }
 
 - request:
-    url: ^/token$
+    url: ^/bank/v1/_oauth/authorization-code$
     method: POST
     post: >
-      {"scopes":\[[^\]]+\]}
-    headers:
-      x-grant-token: ".+"
-      x-uid: ".+"
-      x-flow: "complete"
+      grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=complete
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "auth_code": "00authcode00"}
+      {
+        "uid":"<% post[1] %>",
+        "appKey":"allowedkey",
+        "authCode":"00authcode00",
+        "expiresIn":30,
+        "grantToken":"<% Math.random() %>",
+        "callbackUris": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ]
+      }
 
 - request:
-    url: ^/token$
+    url: ^/bank/v1/_oauth/authorization-code$
     method: POST
     post: >
-      {"scopes":\[[^\]]+\]}
-    headers:
-      x-grant-token: ".+"
-      x-uid: ".+"
-      x-flow: "implicit"
+      grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=implicit
   response:
     headers:
       content-type: application/json
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "access_token": "00acesstoken00"}
+      {
+        "uid":"<% post[1] %>",
+        "appKey":"allowedkey",
+        "accessToken":"00acesstoken00",
+        "expiresIn":30,
+        "grantToken":"<% Math.random() %>",
+        "callbackUris": [
+          "http://www.google.com",
+          "http://localhost:8082/consolidate-login.html",
+          "http://localhost:3666/#/rest-client/oauth/consolidate-login"
+        ]
+      }
 
 - request:
-    url: ^/token$
+    url: ^/bank/v1/_oauth/authorization-code$
     method: POST
   response:
     headers:
