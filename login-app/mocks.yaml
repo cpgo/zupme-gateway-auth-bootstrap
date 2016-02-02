@@ -92,7 +92,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "auth_code": "00authcode00"}
+      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "auth_code": "00authcode00"}
 
 - request:
     url: ^/token$
@@ -109,7 +109,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "access_token": "00acesstoken00"}
+      {"grant_token": "granttokenwithpermissions", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$
@@ -126,7 +126,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "auth_code": "00authcode00"}
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "auth_code": "00authcode00"}
 
 - request:
     url: ^/token$
@@ -143,7 +143,7 @@
     status: 200
     latency: 150
     body: >
-      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html"], "access_token": "00acesstoken00"}
+      {"grant_token": "<% Math.random() %>", "callback_urls": ["http://www.google.com", "http://localhost:8082/consolidate-login.html", "http://localhost:3666/#/rest-client/oauth/consolidate-login"], "access_token": "00acesstoken00"}
 
 - request:
     url: ^/token$

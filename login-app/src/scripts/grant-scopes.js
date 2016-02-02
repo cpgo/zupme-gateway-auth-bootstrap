@@ -37,13 +37,13 @@
   }
 
   function loadApplication() {
-    return $.get(conf.apiUrl + '/applications/' + url.appId);
+    return $.get(conf.apiUrl + '/applications/' + url.applicationKey);
   }
 
   function loadAuthorizedScopes() {
     return $.ajax({
       type: 'get',
-      url: conf.apiUrl + '/applications/' + url.appId + '/granted',
+      url: conf.apiUrl + '/applications/' + url.applicationKey + '/granted',
       headers: {'x-grant-token': auth['grant_token']}
     });
   }
