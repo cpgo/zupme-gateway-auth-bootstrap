@@ -2,10 +2,10 @@
   'use strict';
 
   var conf = company.config,
-      url = company.utils.getUrlParams(),
-      auth = company.utils.getCookieAsObject(conf.cookieName),
-      oauthApiUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth',
-      application, authorizedScopes, applicationHeader;
+    url = company.utils.getUrlParams(),
+    auth = company.utils.getCookieAsObject(conf.cookieName),
+    oauthApiUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth',
+    application, authorizedScopes, applicationHeader;
 
   function initialize() {
     if (!auth) {
@@ -23,8 +23,8 @@
 
   function createApplicationHeader() {
     applicationHeader = url.applicationKey ?
-      {'x-application-key': url.applicationKey} :
-      {'x-developer-application-key': url.developerApplicationKey};
+    {'x-application-key': url.applicationKey} :
+    {'x-developer-application-key': url.developerApplicationKey};
   }
 
   function loadApplicationAndScopes() {
@@ -47,13 +47,18 @@
   }
 
   function loadAuthorizedScopes() {
-    return $.get(oauthApiUrl + '/user-scopes?uid=' + auth.uid);
+    return $.ajax({
+      type: 'get',
+      url: oauthApiUrl + '/user-scopes?uid=' + auth.uid,
+      headers: applicationHeader
+    });
   }
 
   function renderPage(appResponse, scopesResponse) {
     application = appResponse[0];
     authorizedScopes = scopesResponse[0].scopes;
     verifyCallbackUrl(application.callbackUrls);
+    verifyRequiredScopes(_.keys(application.scopes));
     renderApplication();
     renderScopes();
   }
@@ -82,7 +87,7 @@
 
   function askForAuthorizationInScopes(scopes) {
     var model = $('#scope-model').remove(),
-        list = $('.scope-box');
+      list = $('.scope-box');
 
     _.forEach(scopes, function (scope) {
       renderScope(scope, model, list);
@@ -140,6 +145,15 @@
     if (!_.includes(validUrls, url.callbackUrl)) {
       showUnexpectedError();
       throw 'Invalid callback URL. Operation was cancelled due to lack of security.';
+    }
+  }
+
+  function verifyRequiredScopes(validScopesNames) {
+    var requiredScopesNames = url.scopes.split(',');
+    var invalidRequiredScopes = _.difference(requiredScopesNames, validScopesNames);
+    if (invalidRequiredScopes.length) {
+      showUnexpectedError();
+      throw 'Invalid scopes: ' + invalidRequiredScopes.join(', ');
     }
   }
 

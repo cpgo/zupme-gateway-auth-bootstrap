@@ -1,7 +1,8 @@
 (function () {
   'use strict';
 
-  var conf = company.config;
+  var conf = company.config,
+    url = company.utils.getUrlParams();
 
   function initialize() {
     if (isAuthenticated()) {
@@ -13,7 +14,13 @@
   }
 
   function isAuthenticated() {
-   return !!company.utils.getCookieAsObject(conf.cookieName);
+    return !!company.utils.getCookieAsObject(conf.cookieName);
+  }
+
+  function getApplicationHeader() {
+    return url.applicationKey ?
+    {'x-application-key': url.applicationKey} :
+    {'x-developer-application-key': url.developerApplicationKey};
   }
 
   function onSubmit() {
@@ -28,7 +35,8 @@
     $.ajax({
       type: conf.login.httpMethod,
       url: conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + conf.login.resourcePath,
-      data: JSON.stringify(data)
+      data: JSON.stringify(data),
+      headers: getApplicationHeader()
     }).done(afterLogin).fail(showErrors);
   }
 
