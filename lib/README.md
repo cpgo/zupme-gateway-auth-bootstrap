@@ -21,13 +21,14 @@ acordo com o ambiente. Veja a seguir a descrição de cada parâmetro:
 ## Funções na biblioteca
 A biblioteca implementa as seguintes funções relativas à autenticação:
 
-| Nome                  | Descrição                                                                                 |
-|---------------------- | ----------------------------------------------------------------------------------------- |
-| login                 | Abre o popup de login                                                                     |
-| logout                | Efetua logout, apagando o cookie de autenticação do domínio da aplicação do desenvolvedor |
-| consolidateLogin      | Consolida o login, armazenando em cookie os dados da autenticação                         |
-| getAuthenticationData | Retorna os dados do usuario logado                                                        |
-| isAuthenticated       | Retorna true se o usuário está autenticado e falso em caso contrário                      |
+| Nome                   | Descrição                                                                                 |
+|----------------------- | ----------------------------------------------------------------------------------------- |
+| login                  | Abre o popup de login                                                                     |
+| logout                 | Efetua logout, apagando o cookie de autenticação do domínio da aplicação do desenvolvedor |
+| consolidateLogin       | Consolida o login, armazenando em cookie os dados da autenticação                         |
+| getAuthorizationHeader | Retorna o valor do header Authorization que deve ser passado para as requisições http     |
+| getAuthenticationData  | Retorna os dados do usuario logado                                                        |
+| isAuthenticated        | Retorna true se o usuário está autenticado e falso em caso contrário                      |
   
 O processo de login é construído através de duas funções: "login" e "consolidateLogin". Para abrir o popup de login,
 chama-se a função "login" passando como parâmetros o appId, os escopos, a função que deve ser executada em caso de 
