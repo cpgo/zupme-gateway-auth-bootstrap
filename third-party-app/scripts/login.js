@@ -20,14 +20,14 @@
   }
 
   var implicitFlow = {
-    callbackUrl: 'consolidate-login.html',
+    callbackUrl: location.origin + 'consolidate-login.html',
     developerApplicationKey: 'a1sfdf5551de',
     scopes: ['read_bank_info', 'read_personal_data'],
     onSuccess: onLoginSuccess
   };
 
   var completeFlow = {
-    callbackUrl: 'consolidate-login.html',
+    callbackUrl: location.origin + '/consolidate-login.html',
     developerApplicationKey: 'a1sfdf5551de',
     scopes: ['read_bank_info', 'read_personal_data'],
     exchangeTokens: exchangeTokens
