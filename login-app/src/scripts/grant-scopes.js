@@ -58,7 +58,7 @@
     application = appResponse[0];
     authorizedScopes = scopesResponse[0].scopes;
     verifyCallbackUrl(application.callbackUrls);
-    verifyRequiredScopes(_.keys(application.scopes));
+    verifyRequiredScopes(_.map(application.scopes, 'name'));
     renderApplication();
     renderScopes();
   }
@@ -82,7 +82,7 @@
   }
 
   function buildFullScope(scopeName) {
-    return {name: scopeName, description: application.scopes[scopeName]};
+    return {name: scopeName, description: _.find(application.scopes, {name: scopeName}).description};
   }
 
   function askForAuthorizationInScopes(scopes) {

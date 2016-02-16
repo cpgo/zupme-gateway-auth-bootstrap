@@ -59,11 +59,11 @@
           "http://localhost:8082/consolidate-login.html",
           "http://localhost:3666/#/rest-client/oauth/consolidate-login"
         ],
-        "scopes": {
-          "read_bank_info": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses.",
-          "perform_bank_transactions": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!",
-          "read_personal_data": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
-        }
+        "scopes": [
+          {"name": "read_bank_info", "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."},
+          {"name": "perform_bank_transactions", "description": : "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"},
+          {"name": "read_personal_data", "description": : "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."}
+        ]
       }
 
 - request:
@@ -86,11 +86,11 @@
           "http://localhost:8082/consolidate-login.html",
           "http://localhost:3666/#/rest-client/oauth/consolidate-login"
         ],
-        "scopes": {
-          "read_bank_info": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses.",
-          "perform_bank_transactions": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!",
-          "read_personal_data": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."
-        }
+        "scopes": [
+          {"name": "read_bank_info", "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."},
+          {"name": "perform_bank_transactions", "description": : "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"},
+          {"name": "read_personal_data", "description": : "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."}
+        ]
       }
 
 - request:
