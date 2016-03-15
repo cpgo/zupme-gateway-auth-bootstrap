@@ -17,10 +17,10 @@
     return !!company.utils.getCookieAsObject(conf.cookieName);
   }
 
-  function getApplicationHeader() {
+  function getQueryString() {
     return url.applicationKey ?
-    {'x-application-key': url.applicationKey} :
-    {'x-developer-application-key': url.developerApplicationKey};
+    '?gw-app-key=' + url.applicationKey :
+    '?gw-dev-app-key=' + url.developerApplicationKey;
   }
 
   function onSubmit() {
@@ -34,9 +34,9 @@
   function login(data) {
     $.ajax({
       type: conf.login.httpMethod,
-      url: conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + conf.login.resourcePath,
+      url: conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + conf.login.resourcePath + getQueryString(),
       data: JSON.stringify(data),
-      headers: getApplicationHeader()
+      contentType: 'application/json'
     }).done(afterLogin).fail(showErrors);
   }
 

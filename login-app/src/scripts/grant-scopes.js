@@ -5,14 +5,14 @@
     url = company.utils.getUrlParams(),
     auth = company.utils.getCookieAsObject(conf.cookieName),
     oauthApiUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth',
-    application, authorizedScopes, applicationHeader;
+    application, authorizedScopes, appQueryString;
 
   function initialize() {
     if (!auth) {
       return goToLoginPage();
     }
 
-    createApplicationHeader();
+    createApplicationQueryString();
     loadApplicationAndScopes().done(renderPage).fail(showUnexpectedError);
     bindButtons();
   }
@@ -21,11 +21,12 @@
     location.href = 'login.html' + location.search;
   }
 
-  function createApplicationHeader() {
-    applicationHeader = url.applicationKey ?
-    {'x-application-key': url.applicationKey} :
-    {'x-developer-application-key': url.developerApplicationKey};
+  function createApplicationQueryString() {
+    appQueryString = url.applicationKey ?
+    'gw-app-key=' + url.applicationKey :
+    'gw-dev-app-key=' + url.developerApplicationKey;
   }
+
 
   function loadApplicationAndScopes() {
     return $.when(loadApplication(), loadAuthorizedScopes());
@@ -39,19 +40,11 @@
   }
 
   function loadApplication() {
-    return $.ajax({
-      type: 'get',
-      url: oauthApiUrl + '/application',
-      headers: applicationHeader
-    });
+    return $.get(oauthApiUrl + '/application?' + appQueryString);
   }
 
   function loadAuthorizedScopes() {
-    return $.ajax({
-      type: 'get',
-      url: oauthApiUrl + '/user-scopes?uid=' + auth.uid,
-      headers: applicationHeader
-    });
+    return $.get(oauthApiUrl + '/user-scopes?uid=' + auth.uid + '&' + appQueryString);
   }
 
   function renderPage(appResponse, scopesResponse) {
@@ -113,17 +106,14 @@
   }
 
   function grantPermissions() {
-    return $.ajax({
-      url: oauthApiUrl + '/authorization-code',
-      type: 'post',
-      headers: applicationHeader,
-      data: {
-        grantToken: auth.grantToken,
-        uid: auth.uid,
-        scopes: url.scopes,
-        grantType: url.grantType
-      }
-    });
+    var data = {
+      grantToken: auth.grantToken,
+      uid: auth.uid,
+      scopes: url.scopes,
+      grantType: url.grantType
+    };
+
+    return $.post(oauthApiUrl + '/authorization-code?' + appQueryString, data);
   }
 
   function handleTokens(data, statusText, xhr) {
