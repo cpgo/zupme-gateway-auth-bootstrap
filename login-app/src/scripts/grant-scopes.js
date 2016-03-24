@@ -131,10 +131,19 @@
     company.utils.writeObjectAsCookie(conf.cookieName, auth, expiresInSeconds);
   }
 
-  function verifyCallbackUrl(validUrls) {
-    if (!_.includes(validUrls, url.callbackUrl)) {
+  function verifyCallbackUrl(validDomains) {
+    if (!isCallbackUrlValid(validDomains)) {
       showUnexpectedError();
       throw 'Invalid callback URL. Operation was cancelled due to lack of security.';
+    }
+  }
+
+  function verifyRequiredScopes(validScopesNames) {
+    var requiredScopesNames = url.scopes.split(',');
+    var invalidRequiredScopes = _.difference(requiredScopesNames, validScopesNames);
+    if (invalidRequiredScopes.length) {
+      showUnexpectedError();
+      throw 'Invalid scopes: ' + invalidRequiredScopes.join(', ');
     }
   }
 
