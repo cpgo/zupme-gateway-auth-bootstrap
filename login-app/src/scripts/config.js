@@ -1,1 +1,1 @@
-(function(){'use strict';window.company=window.company||{};company.config={"cookieName":"company_authorization","login":{"entrypointUrl":"http://localhost:8882","apiPath":"/bank","apiVersionPath":"/v1","resourcePath":"/login","httpMethod":"POST"}};}());
+(function(){'use strict';window.company=window.company||{};company.config={"cookieName":"company_authorization","login":{"entrypointUrl":"https://gateway.qa.gateway.zup.me","apiPath":"/banking","apiVersionPath":"/v1","resourcePath":"/sessions","httpMethod":"POST"}};}());

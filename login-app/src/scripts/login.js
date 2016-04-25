@@ -42,7 +42,7 @@
 
   function showErrors(xhr) {
     if (xhr.status !== 401) {
-      return window.location = 'error.html' + location.search;
+      company.utils.showErrorPage();
     }
     $('.errors').html('Nome de usuário e/ou senha incorretos.');
     $('#password').val('');
