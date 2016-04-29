@@ -23,8 +23,8 @@
 
   function createApplicationQueryString() {
     appQueryString = url.applicationKey ?
-    'gw-app-key=' + url.applicationKey :
-    'gw-dev-app-key=' + url.developerApplicationKey;
+      'gw-app-key=' + url.applicationKey :
+      'gw-dev-app-key=' + url.developerApplicationKey;
   }
 
 
@@ -75,7 +75,7 @@
   }
 
   function buildFullScope(scopeName) {
-    return {name: scopeName, description: _.find(application.scopes, {name: scopeName}).description};
+    return { name: scopeName, description: _.find(application.scopes, { name: scopeName }).description };
   }
 
   function askForAuthorizationInScopes(scopes) {
@@ -131,19 +131,19 @@
     company.utils.writeObjectAsCookie(conf.cookieName, auth, expiresInSeconds);
   }
 
+  function isCallbackUrlValid(validDomains) {
+    return _.find(validDomains, function (domain) {
+      var domainWithEndingSlash = domain.replace(/([^\/])$/, '$1/'),
+        domainWithEndingPortSymbol = domain.replace(/([^:])$/, '$1:');
+
+      return url.callbackUrl === domain || url.callbackUrl.match('^' + domainWithEndingSlash) || url.callbackUrl.match('^' + domainWithEndingPortSymbol);
+    });
+  }
+
   function verifyCallbackUrl(validDomains) {
     if (!isCallbackUrlValid(validDomains)) {
       showUnexpectedError();
       throw 'Invalid callback URL. Operation was cancelled due to lack of security.';
-    }
-  }
-
-  function verifyRequiredScopes(validScopesNames) {
-    var requiredScopesNames = url.scopes.split(',');
-    var invalidRequiredScopes = _.difference(requiredScopesNames, validScopesNames);
-    if (invalidRequiredScopes.length) {
-      showUnexpectedError();
-      throw 'Invalid scopes: ' + invalidRequiredScopes.join(', ');
     }
   }
 
@@ -163,4 +163,4 @@
   if (isGrantScopesPage()) {
     initialize();
   }
-}());
+} ());
