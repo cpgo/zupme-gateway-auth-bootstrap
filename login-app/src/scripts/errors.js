@@ -29,7 +29,7 @@
   }
 
   function loginHasData(url) {
-    var login = original.config.login;
+    var login = company.config.login;
     var loginUrl = login.entrypointUrl + login.apiPath + login.apiVersionPath + login.resourcePath;
     return loginUrl == url.split('?')[0];
   }
@@ -46,7 +46,7 @@
 
   function loadErrorsCondition(settings) {
     var matchError;
-    var queryParams = original.utils.getUrlParams(settings.url);
+    var queryParams = company.utils.getUrlParams(settings.url);
 
     if (!hasAppKey(queryParams)) { matchError = trace('app.key.undefined'); }
     if (!queryParams.callbackUrl) { matchError = trace('callbackUrl.undefined'); }
