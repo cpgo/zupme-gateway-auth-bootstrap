@@ -96,7 +96,7 @@
 
   function showUnexpectedError() {
     company.utils.deleteCookie(conf.cookieName);
-    window.location = 'error.html' + location.search;
+    company.utils.showErrorPage();
   }
 
   function allow() {
