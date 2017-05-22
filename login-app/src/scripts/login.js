@@ -18,9 +18,9 @@
   }
 
   function getQueryString() {
-    return url.applicationKey ?
-    '?gw-app-key=' + url.applicationKey :
-    '?gw-dev-app-key=' + url.developerApplicationKey;
+    return !url.developer ?
+    '?gw-app-key=' + url.client_id :
+    '?gw-dev-app-key=' + url.client_id;
   }
 
   function onSubmit() {

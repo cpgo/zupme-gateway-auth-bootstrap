@@ -1,10 +1,10 @@
 {
   "cookieName": "company_authorization",
   "login": {
-    "entrypointUrl": "https://ngbank.gateway.zup.me",
-    "apiPath": "/banking",
+    "entrypointUrl": "https://gateway.qa.gateway.zup.me",
+    "apiPath": "/placeholder",
     "apiVersionPath": "/v1",
-    "resourcePath": "/sessions",
+    "resourcePath": "/posts",
     "httpMethod": "POST"
   }
 }

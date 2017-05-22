@@ -24,7 +24,7 @@
     "minify": "npm run minify-app-js && npm run minify-css",
     "minify-app-js": "node node_modules/uglify-js/bin/uglifyjs src/scripts/utils.js src/scripts/config.js src/scripts/utils.js src/scripts/login.js src/scripts/grant-scopes.js --mangle --compress -o dist/scripts/app.js",
     "minify-css": "cat src/css/*.css | node node_modules/csso/bin/csso -o dist/css/style.css",
-    "serve": "npm run copy-config && http-server src -c-1",
+    "serve": "npm run copy-config && http-server src -c-1 -p 8081",
     "serve:dist": "npm run build && http-server dist -c-1",
     "stubby": "node node_modules/stubby/bin/stubby -d mocks.yaml"
   }
