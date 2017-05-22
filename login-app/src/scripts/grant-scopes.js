@@ -121,7 +121,6 @@
   }
 
   function goToCallbackUrl(urlParams) {
-    debugger
     window.location = url.redirect_uri + '?' + company.utils.encodeObjectToUrl(urlParams);
   }
 
