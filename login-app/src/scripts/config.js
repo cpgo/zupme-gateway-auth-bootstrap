@@ -1,1 +1,1 @@
-(function(){'use strict';window.company=window.company||{};company.config={"cookieName":"company_authorization","login":{"entrypointUrl":"https://ngbank.gateway.zup.me","apiPath":"/banking","apiVersionPath":"/v1","resourcePath":"/sessions","httpMethod":"POST"}};}());
+(function(){'use strict';window.company=window.company||{};company.config={"cookieName":"company_authorization","login":{"entrypointUrl":"https://gateway.qa.gateway.zup.me","apiPath":"/placeholder","apiVersionPath":"/v1","resourcePath":"/posts","httpMethod":"POST"}};}());

@@ -22,11 +22,10 @@
   }
 
   function createApplicationQueryString() {
-    appQueryString = url.applicationKey ?
-      'gw-app-key=' + url.applicationKey :
-      'gw-dev-app-key=' + url.developerApplicationKey;
+    appQueryString = !url.developer ?
+      'gw-app-key=' + url.client_id :
+      'gw-dev-app-key=' + url.client_id;
   }
-
 
   function loadApplicationAndScopes() {
     return $.when(loadApplication(), loadAuthorizedScopes());
@@ -112,7 +111,6 @@
       scopes: url.scopes,
       grantType: url.grantType
     };
-
     return $.post(oauthApiUrl + '/authorization-code?' + appQueryString, data);
   }
 
@@ -123,7 +121,8 @@
   }
 
   function goToCallbackUrl(urlParams) {
-    window.location = url.callbackUrl + '?' + company.utils.encodeObjectToUrl(urlParams);
+    debugger
+    window.location = url.redirect_uri + '?' + company.utils.encodeObjectToUrl(urlParams);
   }
 
   function replaceGrantToken(newGrantToken, expiresInSeconds) {
@@ -136,7 +135,7 @@
       var domainWithEndingSlash = domain.replace(/([^\/])$/, '$1/'),
         domainWithEndingPortSymbol = domain.replace(/([^:])$/, '$1:');
 
-      return url.callbackUrl === domain || url.callbackUrl.match('^' + domainWithEndingSlash) || url.callbackUrl.match('^' + domainWithEndingPortSymbol);
+      return url.redirect_uri === domain || url.redirect_uri.match('^' + domainWithEndingSlash) || url.redirect_uri.match('^' + domainWithEndingPortSymbol);
     });
   }
 
