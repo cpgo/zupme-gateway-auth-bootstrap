@@ -69,7 +69,7 @@
   }
 
   function getRequiredScopesWhereAccessWasNotGranted() {
-    var requiredScopes = url.scopes.split(',');
+    var requiredScopes = url.scope.split(',');
     return _.map(_.difference(requiredScopes, authorizedScopes), buildFullScope);
   }
 
@@ -104,14 +104,34 @@
       .fail(showUnexpectedError);
   }
 
-  function grantPermissions() {
-    var data = {
-      grantToken: auth.grantToken,
-      uid: auth.uid,
-      scopes: url.scopes,
-      grantType: url.grantType
+  function getPathByResponseType(response_type) {
+    var paths = {
+      token: '/access-token',
+      code: '/authorization-code'
     };
-    return $.post(oauthApiUrl + '/authorization-code?' + appQueryString, data);
+    return paths[response_type];
+  }
+
+  function getAuthDataByResponseType(response_type) {
+    var data = {
+      token: {
+        grantToken: auth.grantToken,
+        uid: auth.uid,
+        scopes: url.scope,
+        grantType: 'implicit'
+      },
+      code: {
+        grantToken: auth.grantToken,
+        scopes: url.scope
+      }
+    };
+    return data[response_type];
+  }
+
+  function grantPermissions() {
+    var data = getAuthDataByResponseType(url.response_type);
+    var apiUrl = oauthApiUrl + getPathByResponseType(url.response_type);
+    return $.post(apiUrl + '?' + appQueryString, data);
   }
 
   function handleTokens(data, statusText, xhr) {
@@ -146,7 +166,7 @@
   }
 
   function verifyRequiredScopes(validScopesNames) {
-    var requiredScopesNames = url.scopes.split(',');
+    var requiredScopesNames = url.scope.split(',');
     var invalidRequiredScopes = _.difference(requiredScopesNames, validScopesNames);
     if (invalidRequiredScopes.length) {
       showUnexpectedError();
