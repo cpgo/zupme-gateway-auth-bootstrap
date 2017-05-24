@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var conf = company.config,
+  var conf = company.utils.getConfig(),
     url = company.utils.getUrlParams();
 
   function initialize() {
