@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>QA - Sandbox</title>
+  <link href="css/general.css" rel="stylesheet" type="text/css">
+  <link href="css/qa.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div>
+  <img src="images/logo.svg"/>
+
+  <h1>Authenticator Resource</h1>
+  <h2>QA ONLY</h2>
+
+  <div class="config-box">
+    <form>
+      <label for="entrypointUrl">Entrypoint URL:</label>
+      <input id="entrypointUrl" type="text" name="entrypointUrl" required />
+
+      <label for="apiPath">API path:</label>
+      <input id="apiPath" type="text" name="apiPath" required />
+
+      <label for="apiVersionPath">API Version path:</label>
+      <input id="apiVersionPath" type="text" name="apiVersionPath" required />
+
+      <label for="resourcePath">Resource path:</label>
+      <input id="resourcePath" type="text" name="resourcePath" required />
+
+      <label for="httpMethod">Method:</label>
+      <input id="httpMethod" type="text" name="httpMethod" required />
+
+      <p class="button-paragraph">
+        <button type="submit">Modificar</button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script src="lib/jquery-2.2.0.min.js"></script>
+<script src="lib/lodash.min.js"></script>
+<script src="scripts/utils.js"></script>
+<script src="scripts/config.js"></script>
+<script src="scripts/qa.js"></script>
+
+</body>
+</html>

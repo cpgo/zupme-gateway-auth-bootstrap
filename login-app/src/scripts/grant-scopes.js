@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var conf = company.config,
+  var conf = company.utils.getConfig(),
     url = company.utils.getUrlParams(),
     auth = company.utils.getCookieAsObject(conf.cookieName),
     oauthApiUrl = conf.login.entrypointUrl + conf.login.apiPath + conf.login.apiVersionPath + '/_oauth',
@@ -9,16 +9,12 @@
 
   function initialize() {
     if (!auth) {
-      return goToLoginPage();
+      return company.utils.goToLoginPage();
     }
 
     createApplicationQueryString();
     loadApplicationAndScopes().done(renderPage).fail(showUnexpectedError);
     bindButtons();
-  }
-
-  function goToLoginPage() {
-    location.href = 'login.html' + location.search;
   }
 
   function createApplicationQueryString() {
