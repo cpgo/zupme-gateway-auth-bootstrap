@@ -100,25 +100,21 @@
       .fail(showUnexpectedError);
   }
 
-  function getPathByResponseType(response_type) {
-    var paths = {
-      token: '/access-token',
-      code: '/authorization-code'
-    };
-    return paths[response_type];
+  function getPath() {
+    return "/authorize";
   }
 
   function getAuthDataByResponseType(response_type) {
     var data = {
       token: {
         grantToken: auth.grantToken,
-        uid: auth.uid,
         scopes: url.scope,
-        grantType: 'implicit'
+        responseType: 'token'
       },
       code: {
         grantToken: auth.grantToken,
-        scopes: url.scope
+        scopes: url.scope,
+        responseType: 'code'
       }
     };
     return data[response_type];
@@ -126,7 +122,7 @@
 
   function grantPermissions() {
     var data = getAuthDataByResponseType(url.response_type);
-    var apiUrl = oauthApiUrl + getPathByResponseType(url.response_type);
+    var apiUrl = oauthApiUrl + getPath();
     return $.post(apiUrl + '?' + appQueryString, data);
   }
 

@@ -88,8 +88,8 @@
         ],
         "scopes": [
           {"name": "read_bank_info", "description": "Allows the application to read your bank activity. Example: Read balance, read credit card expenses."},
-          {"name": "perform_bank_transactions", "description": : "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"},
-          {"name": "read_personal_data", "description": : "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."}
+          {"name": "perform_bank_transactions", "description": "Allows the application to perform transactions like payments and transfers. Attention: this will allow the application to mess with your money!"},
+          {"name": "read_personal_data", "description": "Allows the application read your personal data like name, surname, ssn, dependents, investitor profile, etc."}
         ]
       }
 
@@ -103,10 +103,10 @@
 # TOKEN
 
 - request:
-    url: ^/bank/v1/_oauth/authorization-code$
+    url: ^/bank/v1/_oauth/authorize$
     method: POST
     post: >
-      grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=complete
+      grantToken=([^&]+)&scopes=[^&]+&responseType=code&redirecUri=example.com/callback
   response:
     headers:
       Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
@@ -118,16 +118,15 @@
     body: >
       {
         "uid":"<% post[1] %>",
-        "appKey":"allowedkey",
-        "authCode":"00authcode00",
+        "code":"00authcode00",
         "expiresIn":86400
       }
 
 - request:
-    url: ^/bank/v1/_oauth/authorization-code$
+    url: ^/bank/v1/_oauth/authorize$
     method: POST
     post: >
-      grantToken=([^&]+)&uid=([^&]+)&scopes=[^&]+&grantType=implicit
+      grantToken=([^&]+)&scopes=[^&]+&responseType=token
   response:
     headers:
       Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
@@ -139,13 +138,13 @@
     body: >
       {
         "uid":"<% post[1] %>",
-        "appKey":"allowedkey",
         "accessToken":"00acesstoken00",
+        "tokenType": "bearer",
         "expiresIn":86400
       }
 
 - request:
-    url: ^/bank/v1/_oauth/authorization-code$
+    url: ^/bank/v1/_oauth/authorize$
     method: POST
   response:
     status: 500
