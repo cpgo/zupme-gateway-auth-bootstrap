@@ -106,7 +106,7 @@
     url: ^/bank/v1/_oauth/authorize$
     method: POST
     post: >
-      grantToken=([^&]+)&scopes=[^&]+&responseType=code&redirecUri=example.com/callback
+      grantToken=([^&]+)&scope=[^&]+&responseType=code&redirecUri=example.com/callback
   response:
     headers:
       Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
@@ -126,7 +126,7 @@
     url: ^/bank/v1/_oauth/authorize$
     method: POST
     post: >
-      grantToken=([^&]+)&scopes=[^&]+&responseType=token
+      grantToken=([^&]+)&scope=[^&]+&responseType=token
   response:
     headers:
       Access-Control-Expose-Headers: x-grant-token, x-grant-token-expiry
