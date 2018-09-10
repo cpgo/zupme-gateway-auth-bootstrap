@@ -108,12 +108,12 @@
     var data = {
       token: {
         grantToken: auth.grantToken,
-        scopes: url.scope,
+        scope: url.scope,
         responseType: 'token'
       },
       code: {
         grantToken: auth.grantToken,
-        scopes: url.scope,
+        scope: url.scope,
         responseType: 'code'
       }
     };
@@ -158,7 +158,7 @@
   }
 
   function verifyRequiredScopes(validScopesNames) {
-    var requiredScopesNames = url.scope.split(',');
+    var requiredScopesNames = url.scope.split(' ');
     var invalidRequiredScopes = _.difference(requiredScopesNames, validScopesNames);
     if (invalidRequiredScopes.length) {
       showUnexpectedError();
