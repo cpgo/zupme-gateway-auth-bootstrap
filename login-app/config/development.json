@@ -2,7 +2,7 @@
   "cookieName": "company_authorization",
   "login": {
     "entrypointUrl": "https://gateway.qa.gateway.zup.me",
-    "apiPath": "/placeholder",
+    "apiPath": "/jsonplaceholder",
     "apiVersionPath": "/v1",
     "resourcePath": "/posts",
     "httpMethod": "POST"
